@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Azure Flask Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Items in Database</h1>
+    <ul>
+    {% for item in items %}
+        <li>{{ item.name }} ({{ item.created_at }})</li>
+    {% endfor %}
+    </ul>
+
+    <form action="/add" method="post">
+        <input type="text" name="name" placeholder="New item" required>
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>
