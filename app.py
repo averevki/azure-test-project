@@ -1,14 +1,14 @@
-import pyodbc
+import os
 
+import pyodbc
 from flask import Flask, render_template, request, redirect, url_for
-from config import Config
+from waitress import serve
 
 app = Flask(__name__)
-app.config.from_object(Config)
 
 # Database connection function
 def get_db_connection():
-    conn = pyodbc.connect(app.config['DB_CONNECTION_STRING'])
+    conn = pyodbc.connect(os.environ.get('DB_CONNECTION_STRING', ''))
     return conn
 
 # Create sample table if not exists
@@ -46,7 +46,7 @@ def add_item():
     conn.commit()
     return redirect(url_for('index'))
 
+
 if __name__ == "__main__":
     init_db()
-    app.run(host='0.0.0.0', port=5000)
-
+    app.run(host='0.0.0.0', port=os.environ.get('APP_PORT', "5000"))
