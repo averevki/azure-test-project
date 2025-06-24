@@ -2,7 +2,6 @@ import os
 
 import pyodbc
 from flask import Flask, render_template, request, redirect, url_for
-from waitress import serve
 
 app = Flask(__name__)
 

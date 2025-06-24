@@ -2,4 +2,3 @@ flask
 pyodbc  
 python-dotenv  
 flask-migrate
-waitress
