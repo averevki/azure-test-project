@@ -4,10 +4,11 @@ import pyodbc
 from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
+DB_CONNECTION_STRING = os.environ["DB_CONNECTION_STRING"]
 
 # Database connection function
 def get_db_connection():
-    conn = pyodbc.connect(os.environ.get('DB_CONNECTION_STRING', ''))
+    conn = pyodbc.connect(DB_CONNECTION_STRING)
     return conn
 
 # Create sample table if not exists
