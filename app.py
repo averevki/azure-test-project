@@ -16,6 +16,7 @@ def get_db_connection():
     conn = pyodbc.connect(DB_CONNECTION_STRING, attrs_before={SQL_COPT_SS_ACCESS_TOKEN: token_struct})
     return conn
 
+
 # Create sample table if not exists
 def init_db():
     try:
@@ -33,6 +34,7 @@ def init_db():
     except Exception as e:
         print(f"Database error: {str(e)}")
 
+
 # Routes
 @app.route("/")
 def index():  
@@ -41,6 +43,7 @@ def index():
     cursor.execute("SELECT * FROM Items")
     items = cursor.fetchall()
     return render_template('index.html', items=items)
+
 
 @app.route("/add", methods=['POST'])
 def add_item():
