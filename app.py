@@ -1,14 +1,19 @@
 import os
 
-import pyodbc
+import pyodbc, struct
 from flask import Flask, render_template, request, redirect, url_for
+from azure import identity
 
 app = Flask(__name__)
 DB_CONNECTION_STRING = os.environ["DB_CONNECTION_STRING"]
 
-# Database connection function
+
 def get_db_connection():
-    conn = pyodbc.connect(DB_CONNECTION_STRING)
+    credential = identity.DefaultAzureCredential(exclude_interactive_browser_credential=False)
+    token_bytes = credential.get_token("https://database.windows.net/.default").token.encode("UTF-16-LE")
+    token_struct = struct.pack(f'<I{len(token_bytes)}s', len(token_bytes), token_bytes)
+    SQL_COPT_SS_ACCESS_TOKEN = 1256  # This connection option is defined by microsoft in msodbcsql.h
+    conn = pyodbc.connect(DB_CONNECTION_STRING, attrs_before={SQL_COPT_SS_ACCESS_TOKEN: token_struct})
     return conn
 
 # Create sample table if not exists
