@@ -13,7 +13,6 @@ def get_db_connection():
     return conn
 
 
-# Create sample table if not exists
 def init_db():
     try:
         conn = get_db_connection()
