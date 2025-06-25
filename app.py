@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 DB_CONNECTION_STRING = os.environ["DB_CONNECTION_STRING"]
+STATIC_CSS_URL = "https://thehottest.blob.core.windows.net/css/"
 
 
 def get_db_connection():
@@ -28,6 +29,16 @@ def init_db():
         conn.commit()
     except Exception as e:
         print(f"Database error: {str(e)}")
+
+
+# Add this function
+def css_url_for(filename):
+    return f"{STATIC_CSS_URL}{filename}"
+
+
+@app.context_processor
+def inject_static_url():
+    return dict(css_url_for=css_url_for)
 
 
 # Routes
